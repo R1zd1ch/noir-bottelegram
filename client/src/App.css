@@ -1,3 +1,20 @@
+.product-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px; /* Adjust the space between cards */
+}
+
+.product-card {
+  flex: 1 1 calc(50% - 16px); /* Each card takes up 50% of the width, minus the gap */
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .product-card {
+    flex: 1 1 100%; /* For smaller screens, make it one column */
+  }
+}
+
 html, body {
   height: 100%;
   margin: 0%;
