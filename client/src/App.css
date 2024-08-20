@@ -1,8 +1,20 @@
+html, body {
+  height: 100%;
+  margin: 0%;
+  padding: 0%;
+}
+
 #root {
   max-width: 960px;
-  margin: 3px 2px;
+  margin: 0px 0px;
   padding: 0rem;
   text-align: center;
+}
+
+footer {
+  background-color: #f1f1f1; /* Задайте цвет фона для футера */
+  padding: 10px 0; /* Задайте отступы для футера */
+  text-align: center; /* Центрируйте текст в футере */
 }
 
 

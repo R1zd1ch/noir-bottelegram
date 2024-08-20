@@ -1,12 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { cartApi } from './cartApi';
+import cartReducer from './cartApi.js';
 
 const store = configureStore({
-	reducer: {
-		[cartApi.reducerPath]: cartApi.reducer,
-	},
-
-	middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(cartApi.middleware),
+  reducer: {
+    cart: cartReducer,
+  },
 });
 
-export default store;
+export default store

@@ -2,7 +2,6 @@
   "name": "noir-bot",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -11,9 +10,14 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.7",
+    "axios": "^1.7.4",
+    "body-parser": "^1.20.2",
     "bootstrap": "^5.3.3",
     "cn": "^0.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "mysql": "^2.18.1",
     "mysql2": "^3.11.0",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.4",

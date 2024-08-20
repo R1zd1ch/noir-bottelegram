@@ -6,7 +6,7 @@ const navStyle = {
   justifyContent: 'center',
   alignItems: 'center',
   flexGrow: 1,
-  height: '65px',
+  height: '100px',
 };
 
 const NavMenu = () => {
