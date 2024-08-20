@@ -13,17 +13,51 @@ export const fetchCart = createAsyncThunk('carts/fetchCart', async (telegramId) 
 });
 
 // Асинхронный thunk для добавления товара в корзину
-export const addToCart = createAsyncThunk('carts/addToCart', async ({ telegramId, product }) => {
-  const response = await axios.post(`${API_URL}/carts`, {
-    telegram_id: telegramId,
-    product_id: product.id,
-    quantity: 1,
-  });
-  if (response.status !== 200) {
-    throw new Error('Ошибка при добавлении товара в корзину');
+export const addToCart = createAsyncThunk(
+  'carts/addToCart',
+  async ({ telegramId, product }, { getState, dispatch }) => {
+    // Сначала загружаем корзину
+    await dispatch(fetchCart(telegramId));
+    
+    // Получаем состояние корзины после загрузки
+    const state = getState();
+    const cartItems = state.cart.items;
+
+    // Проверяем, есть ли уже такой товар в корзине
+    const existingItem = cartItems.find(item => item.product_id === product.id);
+
+    if (existingItem) {
+      // Если товар уже есть в корзине, увеличиваем его количество
+      const response = await axios.post(`${API_URL}/carts`, {
+        telegram_id: telegramId,
+        product_id: product.id,
+        quantity: 1,  // Увеличиваем количество на 1
+      });
+
+      if (response.status !== 200) {
+        throw new Error('Ошибка при обновлении товара в корзине');
+      }
+
+      return {
+        ...existingItem,
+        quantity: existingItem.quantity + 1,
+      };
+    } else {
+      // Если товара нет в корзине, добавляем его
+      const response = await axios.post(`${API_URL}/carts`, {
+        telegram_id: telegramId,
+        product_id: product.id,
+        quantity: 1,  // Добавляем товар с количеством 1
+      });
+
+      if (response.status !== 200) {
+        throw new Error('Ошибка при добавлении товара в корзину');
+      }
+
+      return { ...product, quantity: 1 };
+    }
   }
-  return product; // Возвращаем добавленный товар для обновления состояния
-});
+);
 
 export const cartSlice = createSlice({
   name: 'cart',
@@ -47,7 +81,12 @@ export const cartSlice = createSlice({
         state.error = action.error.message;
       })
       .addCase(addToCart.fulfilled, (state, action) => {
-        state.items.push(action.payload);
+        const existingItem = state.items.find(item => item.product_id === action.payload.product_id);
+        if (existingItem) {
+          existingItem.quantity = action.payload.quantity;
+        } else {
+          state.items.push(action.payload);
+        }
       })
       .addCase(addToCart.rejected, (state, action) => {
         state.error = action.error.message;
@@ -56,10 +95,7 @@ export const cartSlice = createSlice({
 });
 
 // Селекторы для получения данных из состояния
-export const selectCartItems = (state) => {
-  console.log(state.cart.items);
-  return state.cart.items;
-};
+export const selectCartItems = (state) => state.cart.items;
 export const selectCartStatus = (state) => state.cart.status;
 export const selectCartError = (state) => state.cart.error;
 

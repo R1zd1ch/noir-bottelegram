@@ -1,18 +1,18 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCart, selectCartItems, selectCartStatus, selectCartError } from '../services/cartSlice.js';
+import { uniqueId } from 'lodash';
 
 const Cart = ({ userId }) => {
   const dispatch = useDispatch();
-  const cartItems = useSelector(selectCartItems);
   const cartStatus = useSelector(selectCartStatus);
-  const cartError = useSelector(selectCartError);
-
   useEffect(() => {
     if (cartStatus === 'idle') {
       dispatch(fetchCart(userId));
     }
-  }, [dispatch, userId, cartStatus, cartItems]);
+  }, [dispatch, userId, cartStatus]);
+  const cartItems = useSelector(selectCartItems);
+  const cartError = useSelector(selectCartError);
 
   return (
     <div>
@@ -24,7 +24,7 @@ const Cart = ({ userId }) => {
           {cartItems.length > 0 ? (
             <ul>
               {cartItems.map((item) => (
-                <li key={item.product_id}>
+                <li key={uniqueId()}>
                   {item.name} - {item.quantity} x ${item.price}
                 </li>
               ))}
