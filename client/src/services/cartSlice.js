@@ -21,41 +21,50 @@ export const addToCart = createAsyncThunk(
     
     // Получаем состояние корзины после загрузки
     const state = getState();
+    console.log(state.cart.items)
     const cartItems = state.cart.items;
 
     // Проверяем, есть ли уже такой товар в корзине
-    const existingItem = cartItems.find(item => item.product_id === product.id);
+    const existingItem = cartItems.find(item => item.product_id === product.product_id);
 
     if (existingItem) {
-      // Если товар уже есть в корзине, увеличиваем его количество
-      const response = await axios.post(`${API_URL}/carts`, {
-        telegram_id: telegramId,
-        product_id: product.id,
-        quantity: 1,  // Увеличиваем количество на 1
-      });
-
-      if (response.status !== 200) {
-        throw new Error('Ошибка при обновлении товара в корзине');
-      }
-
-      return {
-        ...existingItem,
-        quantity: existingItem.quantity + 1,
-      };
+      // Если товар уже есть в корзине, возвращаем ошибку
+      throw new Error('Товар уже добавлен в корзину');
     } else {
       // Если товара нет в корзине, добавляем его
       const response = await axios.post(`${API_URL}/carts`, {
         telegram_id: telegramId,
-        product_id: product.id,
-        quantity: 1,  // Добавляем товар с количеством 1
+        product_id: product.product_id,
       });
 
       if (response.status !== 200) {
         throw new Error('Ошибка при добавлении товара в корзину');
       }
 
-      return { ...product, quantity: 1 };
+      return product;
     }
+  }
+);
+
+// Асинхронный thunk для удаления товара из корзины
+export const removeFromCart = createAsyncThunk(
+  'carts/removeFromCart',
+  async ({ telegramId, productId }, { dispatch }) => {
+    const response = await axios.delete(`${API_URL}/carts`, {
+      data: {
+        telegram_id: telegramId,
+        product_id: productId,
+      },
+    });
+
+    if (response.status !== 200) {
+      throw new Error('Ошибка при удалении товара из корзины');
+    }
+
+    // Обновляем корзину после удаления товара
+    await dispatch(fetchCart(telegramId));
+
+    return productId; // Возвращаем ID удаленного товара для обновления состояния
   }
 );
 
@@ -81,14 +90,16 @@ export const cartSlice = createSlice({
         state.error = action.error.message;
       })
       .addCase(addToCart.fulfilled, (state, action) => {
-        const existingItem = state.items.find(item => item.product_id === action.payload.product_id);
-        if (existingItem) {
-          existingItem.quantity = action.payload.quantity;
-        } else {
-          state.items.push(action.payload);
-        }
+        state.items.push(action.payload);
       })
       .addCase(addToCart.rejected, (state, action) => {
+        state.error = action.error.message;
+      })
+      .addCase(removeFromCart.fulfilled, (state, action) => {
+        state.items = state.items.filter(item => item.product_id !== action.payload);
+        state.status = 'succeeded';
+      })
+      .addCase(removeFromCart.rejected, (state, action) => {
         state.error = action.error.message;
       });
   },

@@ -23,15 +23,17 @@ app.get('/products', (req, res) => {
       console.error('Ошибка при получении продуктов:', err);
       return res.status(500).json({ error: 'Ошибка при получении продуктов' });
     }
+    console.log(res);
     res.json(results);
+    return res;
   });
 });
 
 // Добавление продукта в корзину
 app.post('/carts', (req, res) => {
-  const { telegram_id, product_id, quantity } = req.body;
+  const { telegram_id, product_id } = req.body;
 
-  if (!telegram_id || !product_id || !quantity) {
+  if (!telegram_id || !product_id) {
     return res.status(400).json({ error: 'Все поля обязательны' });
   }
 
@@ -46,23 +48,14 @@ app.post('/carts', (req, res) => {
       }
 
       if (results.length > 0) {
-        // Если товар уже в корзине, увеличиваем количество
-        db.query(
-          'UPDATE carts SET quantity = quantity + ? WHERE telegram_id = ? AND product_id = ?',
-          [quantity, telegram_id, product_id],
-          (err) => {
-            if (err) {
-              console.error('Ошибка при обновлении корзины:', err);
-              return res.status(500).json({ error: 'Ошибка при обновлении корзины' });
-            }
-            res.sendStatus(200);
-          }
-        );
+        // Если товар уже в корзине, не добавляем его снова
+        console.log('Товар в корзине');
+        return res.status(400).json({ error: 'Товар уже добавлен в корзину' });
       } else {
         // Если товара нет в корзине, добавляем его
         db.query(
-          'INSERT INTO carts (telegram_id, product_id, quantity) VALUES (?, ?, ?)',
-          [telegram_id, product_id, quantity],
+          'INSERT INTO carts (telegram_id, product_id) VALUES (?, ?)',
+          [telegram_id, product_id],
           (err) => {
             if (err) {
               console.error('Ошибка при добавлении в корзину:', err);
@@ -80,7 +73,7 @@ app.post('/carts', (req, res) => {
 app.get('/carts/:telegram_id', (req, res) => {
   const { telegram_id } = req.params;
   db.query(
-    'SELECT p.name, p.price, c.quantity FROM products p JOIN carts c ON p.id = c.product_id WHERE c.telegram_id = ?',
+    'SELECT p.product_id, p.name, p.price FROM products p JOIN carts c ON p.product_id = c.product_id WHERE c.telegram_id = ?',
     [telegram_id],
     (err, results) => {
       if (err) {

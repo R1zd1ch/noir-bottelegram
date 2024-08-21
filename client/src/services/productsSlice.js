@@ -9,18 +9,31 @@ export const fetchProducts = createAsyncThunk('products/fetchProducts', async ()
   if (response.status !== 200) {
     throw new Error('Ошибка при получении продуктов');
   }
-  console.log(response.data);
   return response.data; // Возвращаем данные из БД для обработки в extraReducers
+});
+
+// Асинхронный thunk для добавления нового продукта
+export const addProduct = createAsyncThunk('products/addProduct', async (product) => {
+  const response = await axios.post(`${API_URL}/products`, product);
+  if (response.status !== 200) {
+    throw new Error('Ошибка при добавлении продукта');
+  }
+  return response.data; // Возвращаем добавленный продукт для обновления состояния
 });
 
 export const productsSlice = createSlice({
   name: 'products',
   initialState: {
-    items: [],    // Хранение продуктов из базы данных
-    status: 'idle', // Статус загрузки: idle, loading, succeeded, failed
-    error: null,   // Хранение сообщений об ошибках
+    items: [],       // Хранение продуктов из базы данных
+    status: 'idle',  // Статус загрузки: idle, loading, succeeded, failed
+    error: null,     // Хранение сообщений об ошибках
+    showProducts: false,
   },
-  reducers: {},
+  reducers: {
+    toggleShowProducts(state) {
+      state.showProducts = !state.showProducts;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchProducts.pending, (state) => {
@@ -33,13 +46,22 @@ export const productsSlice = createSlice({
       .addCase(fetchProducts.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
+      })
+      .addCase(addProduct.fulfilled, (state, action) => {
+        state.items.push(action.payload); // Добавляем новый продукт в список
+      })
+      .addCase(addProduct.rejected, (state, action) => {
+        state.error = action.error.message;
       });
   },
 });
 
 // Селекторы для получения данных из состояния
+export const { toggleShowProducts } = productsSlice.actions;
+
 export const selectAllProducts = (state) => state.products.items;
 export const selectProductsStatus = (state) => state.products.status;
 export const selectProductsError = (state) => state.products.error;
+export const selectShowProducts = (state) => state.products.showProducts
 
 export default productsSlice.reducer;

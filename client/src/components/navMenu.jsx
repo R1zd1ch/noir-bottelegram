@@ -9,7 +9,7 @@ const navStyle = {
   height: '100px',
 };
 
-const NavMenu = () => {
+const NavMenu = ({ onMenuClick }) => {
   return (
     <>
       <Navbar bg="dark" data-bs-theme="dark">
@@ -22,7 +22,7 @@ const NavMenu = () => {
             />
           </Navbar.Brand>
           <Nav className="me-auto" style={navStyle}>
-            <Nav.Link href="#catalog">Каталог</Nav.Link>
+            <Nav.Link href="#catalog" onClick={onMenuClick}>Каталог</Nav.Link>
             <Nav.Link href="#cart">Корзина</Nav.Link>
             <Nav.Link href='#contacts'>Контакты</Nav.Link>
           </Nav>

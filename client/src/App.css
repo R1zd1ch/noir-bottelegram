@@ -34,4 +34,12 @@ footer {
   text-align: center; /* Центрируйте текст в футере */
 }
 
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* высота экрана */
+  flex-direction: column;
+}
+
 
