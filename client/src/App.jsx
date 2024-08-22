@@ -9,6 +9,7 @@ import Cart from './components/cart.jsx';
 import Card from './components/cardComponents/product.jsx';
 import SimpleSpinner from './components/spinner.jsx';
 import ProductDetails from './components/cardComponents/productDetails.jsx';
+import { selectShowCart, toggleHideCart, toggleShowCart } from './services/cartSlice.js';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -17,6 +18,7 @@ const App = () => {
   const productsError = useSelector(selectProductsError);
   const showProducts = useSelector(selectShowProducts);
   const selectedProduct = useSelector(selectSelectedProduct);
+  const showCart = useSelector(selectShowCart);
   const userId = 'user456';
   const [loading, setLoading] = useState(true); // состояние для отображения спиннера
 
@@ -38,11 +40,18 @@ const App = () => {
   const handleMenuClick = () => {
     dispatch(toggleShowProducts()); // Меняем состояние showProducts
     dispatch(clearSelectedProduct());
+    dispatch(toggleHideCart())
   };
+
+  const handleCartClick = () => {
+    dispatch(toggleShowCart());
+    dispatch(toggleHideProducts());
+  }
 
   const handleClickOnBrandIcon = () => {
     dispatch(toggleHideProducts());
     dispatch(clearSelectedProduct());
+    dispatch(toggleHideCart());
   };
 
   if (loading) {
@@ -58,7 +67,11 @@ const App = () => {
 
   return (
     <>
-      <NavMenu onMenuClick={handleMenuClick} onBrandIconClick={handleClickOnBrandIcon} />
+      <NavMenu 
+      onMenuClick={handleMenuClick} 
+      onBrandIconClick={handleClickOnBrandIcon} 
+      onCartClick={handleCartClick}
+      />
       <Container style={{ minHeight: '350px' }}>
         {selectedProduct ? (
             <ProductDetails product={selectedProduct} />
@@ -89,7 +102,9 @@ const App = () => {
             </>
           )}
       </Container>
-      <Cart userId={userId} />
+      {showCart && (
+        <Cart userId={userId} />
+      )}
       <Footer />
     </>
   );

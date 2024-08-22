@@ -9,7 +9,7 @@ const navStyle = {
   height: '100px',
 };
 
-const NavMenu = ({ onMenuClick, onBrandIconClick }) => {
+const NavMenu = ({ onMenuClick, onBrandIconClick, onCartClick }) => {
   return (
     <>
       <Navbar bg="dark" data-bs-theme="dark">
@@ -23,7 +23,7 @@ const NavMenu = ({ onMenuClick, onBrandIconClick }) => {
           </Navbar.Brand>
           <Nav className="me-auto" style={navStyle}>
             <Nav.Link href="#catalog" onClick={onMenuClick}>Каталог</Nav.Link>
-            <Nav.Link href="#cart">Корзина</Nav.Link>
+            <Nav.Link href="#cart" onClick={onCartClick}>Корзина</Nav.Link>
             <Nav.Link href='#contacts'>Контакты</Nav.Link>
           </Nav>
         </Container>

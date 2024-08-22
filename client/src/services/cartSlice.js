@@ -74,8 +74,16 @@ export const cartSlice = createSlice({
     items: [],       // Товары в корзине
     status: 'idle',  // Статус загрузки: idle, loading, succeeded, failed
     error: null,     // Сообщения об ошибках
+    showCart: false,
   },
-  reducers: {},
+  reducers: {
+    toggleShowCart(state) {
+      state.showCart = !state.showCart;
+    },
+    toggleHideCart(state) {
+      state.showCart = false;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchCart.pending, (state) => {
@@ -105,9 +113,12 @@ export const cartSlice = createSlice({
   },
 });
 
+export const { toggleHideCart, toggleShowCart } = cartSlice.actions;
+
 // Селекторы для получения данных из состояния
 export const selectCartItems = (state) => state.cart.items;
 export const selectCartStatus = (state) => state.cart.status;
 export const selectCartError = (state) => state.cart.error;
+export const selectShowCart = (state) => state.cart.showCart;
 
 export default cartSlice.reducer;

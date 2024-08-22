@@ -18,14 +18,26 @@ const db = createConnection({
 
 // Получение всех продуктов
 app.get('/products', (req, res) => {
-  db.query('SELECT * FROM products', (err, results) => {
+  const query = `
+    SELECT p.product_id, p.name, p.price, p.description, p.created_at, 
+           GROUP_CONCAT(pi.image_url) AS images
+    FROM products p
+    LEFT JOIN product_images pi ON p.product_id = pi.product_id
+    GROUP BY p.product_id
+  `;
+
+  db.query(query, (err, results) => {
     if (err) {
       console.error('Ошибка при получении продуктов:', err);
       return res.status(500).json({ error: 'Ошибка при получении продуктов' });
     }
-    console.log(res);
-    res.json(results);
-    return res;
+    
+    const products = results.map(product => ({
+      ...product,
+      images: product.images ? product.images.split(',') : []
+    }));
+    
+    res.json(products);
   });
 });
 
@@ -49,7 +61,6 @@ app.post('/carts', (req, res) => {
 
       if (results.length > 0) {
         // Если товар уже в корзине, не добавляем его снова
-        console.log('Товар в корзине');
         return res.status(400).json({ error: 'Товар уже добавлен в корзину' });
       } else {
         // Если товара нет в корзине, добавляем его
