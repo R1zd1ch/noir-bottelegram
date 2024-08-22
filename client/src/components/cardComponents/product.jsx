@@ -1,22 +1,31 @@
 import React from 'react';
 import { Card, Button, Container } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { addToCart, removeFromCart } from '../services/cartSlice';
+import { addToCart, removeFromCart } from '../../services/cartSlice';
+import { setSelectedProduct } from '../../services/productsSlice';
 
 const ProductCard = ({ product, userId }) => {
   const dispatch = useDispatch();
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (e) => {
+    e.stopPropagation();
     dispatch(addToCart({ telegramId: userId, product }));
   };
 
-  const handleRemoveFromCart = () => {
+  const handleRemoveFromCart = (e) => {
     console.log(product.id)
+    e.stopPropagation();
     dispatch(removeFromCart({ telegramId: userId, productId: product.product_id }));
   };
 
+  const handleViewDetails = (e) => {
+    if (e.target.tagName !== 'BUTTON') {
+      dispatch(setSelectedProduct(product));
+    }
+  };
+
   return (
-    <Card className="product-card" style={{ width: '18rem' }}>
+    <Card className="product-card" style={{ width: '18rem' }} onClick={handleViewDetails}>
       <Card.Body>
         <Card.Title>{product.name}</Card.Title>
         <Card.Text>{product.description}</Card.Text>

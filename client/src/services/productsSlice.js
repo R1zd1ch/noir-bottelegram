@@ -28,10 +28,20 @@ export const productsSlice = createSlice({
     status: 'idle',  // Статус загрузки: idle, loading, succeeded, failed
     error: null,     // Хранение сообщений об ошибках
     showProducts: false,
+    selectedProduct: null,
   },
   reducers: {
     toggleShowProducts(state) {
       state.showProducts = !state.showProducts;
+    },
+    toggleHideProducts(state) {
+      state.showProducts = false;
+    },
+    setSelectedProduct(state, action) {
+      state.selectedProduct = action.payload;
+    },
+    clearSelectedProduct(state) {
+      state.selectedProduct = null;
     },
   },
   extraReducers: (builder) => {
@@ -56,10 +66,12 @@ export const productsSlice = createSlice({
   },
 });
 
-// Селекторы для получения данных из состояния
-export const { toggleShowProducts } = productsSlice.actions;
+export const { toggleShowProducts, toggleHideProducts } = productsSlice.actions;
+export const { setSelectedProduct,
+  clearSelectedProduct } =  productsSlice.actions;
 
 export const selectAllProducts = (state) => state.products.items;
+export const selectSelectedProduct = (state) => state.products.selectedProduct;
 export const selectProductsStatus = (state) => state.products.status;
 export const selectProductsError = (state) => state.products.error;
 export const selectShowProducts = (state) => state.products.showProducts

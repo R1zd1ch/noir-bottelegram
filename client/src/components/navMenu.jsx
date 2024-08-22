@@ -1,5 +1,5 @@
 import { Navbar, Nav, Container } from 'react-bootstrap';
-import logo from '../assets/logo.png'; // Импорт изображения
+import logo from '../assets/logo.png';
 
 const navStyle = {
   display: 'flex',
@@ -9,12 +9,12 @@ const navStyle = {
   height: '100px',
 };
 
-const NavMenu = ({ onMenuClick }) => {
+const NavMenu = ({ onMenuClick, onBrandIconClick }) => {
   return (
     <>
       <Navbar bg="dark" data-bs-theme="dark">
         <Container>
-          <Navbar.Brand href="#home">
+          <Navbar.Brand onClick={onBrandIconClick} href="#home">
             <img 
               src={logo}
               alt="NOIR"
