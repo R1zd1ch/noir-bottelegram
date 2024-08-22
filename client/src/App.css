@@ -1,3 +1,18 @@
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.5s ease-in-out forwards;
+}
+
 .product-grid {
   display: flex;
   flex-wrap: wrap;
@@ -13,6 +28,12 @@
   .product-card {
     flex: 1 1 100%; /* For smaller screens, make it one column */
   }
+}
+
+.button-group-card {
+  display: flex;
+  box-sizing: border-box;
+  justify-content: space-between;
 }
 
 html, body {
@@ -41,5 +62,6 @@ footer {
   height: 100vh; /* высота экрана */
   flex-direction: column;
 }
+
 
 

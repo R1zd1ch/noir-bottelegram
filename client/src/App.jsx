@@ -18,7 +18,6 @@ const App = () => {
   const userId = 'user456';
   const [loading, setLoading] = useState(true); // состояние для отображения спиннера
 
-
   useEffect(() => {
     if (productsStatus === 'idle' && showProducts) {
       dispatch(fetchProducts());
@@ -27,7 +26,6 @@ const App = () => {
   }, [dispatch, productsStatus, showProducts]);
 
   useEffect(() => {
-    // Симулируем задержку для демонстрации спиннера
     const timer = setTimeout(() => {
       setLoading(false); // скрываем спиннер после загрузки
     }, 2000); // время в миллисекундах
@@ -43,7 +41,7 @@ const App = () => {
     return (
       <>
         <div className="spinner-container">
-          <SimpleSpinner></SimpleSpinner>
+          <SimpleSpinner />
           <p>Loading... Please wait</p>
         </div>
       </>
@@ -52,29 +50,30 @@ const App = () => {
 
   return (
     <>
-      <NavMenu onMenuClick={handleMenuClick}/>
+      <NavMenu onMenuClick={handleMenuClick} />
       <Container style={{ minHeight: '350px' }}>
         <h1>Welcome to Noir-shop!</h1>
         <p>Select a menu option to get started.</p>
-          {showProducts && (
-            <>
-              {productsStatus === 'loading' && 
-                <SimpleSpinner 
-                className="d-flex flex-column align-items-center justify-content-center" 
-                style={{ minHeight: '350px' }}>
-                </SimpleSpinner>
-                }
-              {productsStatus === 'loading' && <p>Loading products...</p>}
-              {productsStatus === 'failed' && <p>Error: {productsError}</p>}
-              {productsStatus === 'succeeded' && (
-                <div className="d-flex product-grid">
-                  {products.map((product) => (
-                    <Card key={product.product_id} product={product} userId={userId} />
-                  ))}
-                </div>
-              )}
-            </>
-          )}
+        {showProducts && (
+          <>
+            {productsStatus === 'loading' && 
+              <div className="d-flex flex-column align-items-center justify-content-center" style={{ minHeight: '350px' }}>
+                <SimpleSpinner />
+                <p>Loading products...</p>
+              </div>
+            }
+            {productsStatus === 'failed' && <p>Error: {productsError}</p>}
+            {productsStatus === 'succeeded' && (
+              <div className="d-flex justify-content-center align-items-center flex-wrap">
+                {products.map((product, index) => (
+                  <div key={product.product_id} className="fade-in-up m-2" style={{ animationDelay: `${index * 0.1}s` }}>
+                    <Card product={product} userId={userId} />
+                  </div>
+                ))}
+              </div>
+            )}
+          </>
+        )}
       </Container>
       <Cart userId={userId} />
       <Footer />

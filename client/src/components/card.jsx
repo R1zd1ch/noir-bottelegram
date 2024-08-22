@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Button } from 'react-bootstrap';
+import { Card, Button, Container } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { addToCart, removeFromCart } from '../services/cartSlice';
 
@@ -21,12 +21,14 @@ const ProductCard = ({ product, userId }) => {
         <Card.Title>{product.name}</Card.Title>
         <Card.Text>{product.description}</Card.Text>
         <Card.Text>${product.price}</Card.Text>
-        <Button variant="primary" onClick={handleAddToCart} className="mr-2">
-          Add to Cart
-        </Button>
-        <Button variant="danger" onClick={handleRemoveFromCart}>
-          Remove from Cart
-        </Button>
+        <Container className="button-group-card">
+          <Button style={{ width: '100px' }} variant="primary" onClick={handleAddToCart} className="mr-2">
+            Add to Cart
+          </Button>
+          <Button style={{ width: '100px' }} variant="danger" onClick={handleRemoveFromCart}>
+            Remove from Cart
+          </Button>
+        </Container>
       </Card.Body>
     </Card>
   );
