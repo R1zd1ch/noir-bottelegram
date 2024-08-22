@@ -1,0 +1,30 @@
+/* Cart.css */
+.cart-container {
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.cart-item {
+  flex: 1 1 calc(25% - 16px); /* Занимает 25% ширины контейнера с учетом промежутка */
+  box-sizing: border-box;
+  max-width: 18rem; /* Ограничиваем максимальную ширину карточки */
+	max-height: 217px;
+}
+
+@media (max-width: 1200px) {
+  .cart-item {
+    flex: 1 1 calc(33.33% - 16px); /* Занимает 33.33% ширины на средних экранах */
+  }
+}
+
+@media (max-width: 768px) {
+  .cart-item {
+    flex: 1 1 calc(50% - 16px); /* Занимает 50% ширины на маленьких экранах */
+  }
+}
+
+@media (max-width: 576px) {
+  .cart-item {
+    flex: 1 1 100%; /* Занимает 100% ширины на самых маленьких экранах */
+  }
+}

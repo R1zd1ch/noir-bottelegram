@@ -46,6 +46,7 @@ const App = () => {
   const handleCartClick = () => {
     dispatch(toggleShowCart());
     dispatch(toggleHideProducts());
+    dispatch(clearSelectedProduct());
   }
 
   const handleClickOnBrandIcon = () => {
@@ -72,13 +73,15 @@ const App = () => {
       onBrandIconClick={handleClickOnBrandIcon} 
       onCartClick={handleCartClick}
       />
-      <Container style={{ minHeight: '350px' }}>
+      <Container className="main-content" style={{ minHeight: '350px' }}>
         {selectedProduct ? (
             <ProductDetails product={selectedProduct} />
           ) : (
             <>
-              <h1>Welcome to Noir-shop!</h1>
-              <p>Select a menu option to get started.</p>
+              <Container className="main-description-text">
+                <h1>Welcome to Noir-shop!</h1>
+                <p>Select a menu option to get started.</p>
+              </Container>
               {showProducts && (
                 <>
                   {productsStatus === 'loading' && (
@@ -101,10 +104,10 @@ const App = () => {
               )}
             </>
           )}
+        {showCart && (
+          <Cart userId={userId} />
+        )}
       </Container>
-      {showCart && (
-        <Cart userId={userId} />
-      )}
       <Footer />
     </>
   );

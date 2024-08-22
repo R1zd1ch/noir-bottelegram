@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Container } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { clearSelectedProduct } from '../../services/productsSlice';
+import { clearSelectedProduct, toggleShowProducts } from '../../services/productsSlice';
 import ProductCarousel from './productCarousel'; // Import the new component
 
 const ProductDetails = ({ product }) => {
@@ -9,6 +9,7 @@ const ProductDetails = ({ product }) => {
 
   const handleBackClick = () => {
     dispatch(clearSelectedProduct());
+    dispatch(toggleShowProducts());
   };
 
   return (

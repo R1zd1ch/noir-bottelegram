@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, Button, Container } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { addToCart, removeFromCart } from '../../services/cartSlice';
-import { setSelectedProduct } from '../../services/productsSlice';
+import { setSelectedProduct, toggleHideProducts } from '../../services/productsSlice';
 
 const ProductCard = ({ product, userId }) => {
   const dispatch = useDispatch();
@@ -21,6 +21,7 @@ const ProductCard = ({ product, userId }) => {
   const handleViewDetails = (e) => {
     if (e.target.tagName !== 'BUTTON') {
       dispatch(setSelectedProduct(product));
+      dispatch(toggleHideProducts());
     }
   };
 

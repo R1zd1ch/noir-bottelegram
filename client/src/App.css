@@ -3,6 +3,12 @@
     opacity: 0;
     transform: translateY(20px);
   }
+
+  50% {
+    opacity: 0.5;
+    transform: translateY(10px);
+  }
+
   100% {
     opacity: 1;
     transform: translateY(0);
@@ -10,7 +16,7 @@
 }
 
 .fade-in-up {
-  animation: fadeInUp 0.5s ease-in-out forwards;
+  animation: fadeInUp 1s ease-in-out forwards;
 }
 
 .product-grid {
@@ -40,14 +46,17 @@ html, body {
   height: 100%;
   margin: 0%;
   padding: 0%;
+  background-color: gray;
 }
 
 #root {
-  max-width: 960px;
-  min-width: 375px;
+  max-width: 1920px;
   margin: 0px 0px;
   padding: 0rem;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 footer {
@@ -56,12 +65,24 @@ footer {
   text-align: center; /* Центрируйте текст в футере */
 }
 
+.footer-no-margin {
+  margin-bottom: 0px;
+}
+
 .spinner-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh; /* высота экрана */
   flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+}
+
+.main-description-text {
+  color: white;
 }
 
 
