@@ -13,7 +13,6 @@ const ProductCard = ({ product, userId }) => {
   };
 
   const handleRemoveFromCart = (e) => {
-    console.log(product.id)
     e.stopPropagation();
     dispatch(removeFromCart({ telegramId: userId, productId: product.product_id }));
   };
@@ -25,17 +24,30 @@ const ProductCard = ({ product, userId }) => {
     }
   };
 
+  // const buttonStyles = {
+  //   width: '52px', 
+  //   fontSize: "7px", 
+  //   height: '40px',
+  // };
+
+  const buttonStyles = {
+    width: '100px', 
+    fontSize: "15px", 
+    height: '70px',
+  };
+
   return (
     <Card className="product-card" style={{ width: '18rem' }} onClick={handleViewDetails}>
+      <Card.Img variant="top" src={product.images[0]} alt={product.name} />
       <Card.Body>
         <Card.Title>{product.name}</Card.Title>
         <Card.Text>{product.description}</Card.Text>
         <Card.Text>${product.price}</Card.Text>
         <Container className="button-group-card">
-          <Button style={{ width: '100px' }} variant="primary" onClick={handleAddToCart} className="mr-2">
+          <Button style={buttonStyles} variant="primary" onClick={handleAddToCart} className="mr-2">
             Add to Cart
           </Button>
-          <Button style={{ width: '100px' }} variant="danger" onClick={handleRemoveFromCart}>
+          <Button style={buttonStyles} variant="danger" onClick={handleRemoveFromCart}>
             Remove from Cart
           </Button>
         </Container>

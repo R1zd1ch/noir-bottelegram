@@ -9,7 +9,7 @@ import Cart from './components/cart.jsx';
 import Card from './components/cardComponents/product.jsx';
 import SimpleSpinner from './components/spinner.jsx';
 import ProductDetails from './components/cardComponents/productDetails.jsx';
-import { selectShowCart, toggleHideCart, toggleShowCart } from './services/cartSlice.js';
+import { selectShowCart, toggleHideCart, toggleShowCart, selectCartStatus, fetchCart } from './services/cartSlice.js';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -19,6 +19,7 @@ const App = () => {
   const showProducts = useSelector(selectShowProducts);
   const selectedProduct = useSelector(selectSelectedProduct);
   const showCart = useSelector(selectShowCart);
+  const cartStatus = useSelector(selectCartStatus);
   const userId = 'user456';
   const [loading, setLoading] = useState(true); // состояние для отображения спиннера
 
@@ -28,6 +29,12 @@ const App = () => {
       console.log(products);
     }
   }, [dispatch, productsStatus, showProducts]);
+
+  useEffect(() => {
+    if (cartStatus === 'idle') {
+      dispatch(fetchCart(userId));
+    }
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -78,7 +85,7 @@ const App = () => {
             <ProductDetails product={selectedProduct} />
           ) : (
             <>
-              <Container className="main-description-text">
+              <Container className="main-description-text fade-in-up-2">
                 <h1>Welcome to Noir-shop!</h1>
                 <p>Select a menu option to get started.</p>
               </Container>
@@ -108,7 +115,7 @@ const App = () => {
           <Cart userId={userId} />
         )}
       </Container>
-      <Footer />
+      <Footer/>
     </>
   );
 };

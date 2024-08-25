@@ -1,9 +1,11 @@
 import { Container, Row, Col, Nav } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTiktok, faTelegram, faVk } from '@fortawesome/free-brands-svg-icons';
 
 const Footer = () => {
   return (
     <footer className="bg-dark text-white py-4 mt-5 text-center footer-no-margin">
-      <Container>
+      <Container className='fade-in-up-2'>
         <Row>
           <Col md={4}>
             <h5>Краткая информация о Noir</h5>
@@ -41,13 +43,13 @@ const Footer = () => {
             <h5>Подпишитесь на нас</h5>
             <Nav className="justify-content-center">
               <Nav.Link href="#tictok" className="text-white">
-                TicTok
+                <FontAwesomeIcon icon={faTiktok} /> TikTok
               </Nav.Link>
               <Nav.Link href="#telegram" className="text-white">
-                TelegramChannel
+                <FontAwesomeIcon icon={faTelegram} /> TG
               </Nav.Link>
               <Nav.Link href="#VK" className="text-white">
-                VK
+                <FontAwesomeIcon icon={faVk} /> VK
               </Nav.Link>
             </Nav>
           </Col>

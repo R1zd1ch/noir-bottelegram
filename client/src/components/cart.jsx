@@ -19,7 +19,7 @@ const Cart = ({ userId }) => {
 
   return (
     <div>
-      <h2>Your Cart</h2>
+      <h2 className="fade-in-up">Your Cart</h2>
       {cartStatus === 'loading' && <Spinner />}
       {cartStatus === 'failed' && <p>Error: {cartError}</p>}
       {cartStatus === 'succeeded' && (
@@ -27,13 +27,13 @@ const Cart = ({ userId }) => {
           {cartItems.length > 0 ? (
             <div className="cart-container d-flex flex-wrap justify-content-center">
               {cartItems.map((item) => (
-                <div key={item.product_id} className="cart-item">
+                <div key={item.product_id} className="cart-item fade-in-up">
                   <CartProductCard product={item} userId={userId} />
                 </div>
               ))}
             </div>
           ) : (
-            <p>Your cart is empty.</p>
+            <p className="fade-in-up" >Your cart is empty.</p>
           )}
         </>
       )}

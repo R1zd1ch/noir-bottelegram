@@ -1,7 +1,7 @@
 @keyframes fadeInUp {
   0% {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(30px);
   }
 
   50% {
@@ -17,6 +17,27 @@
 
 .fade-in-up {
   animation: fadeInUp 1s ease-in-out forwards;
+}
+
+@keyframes fadeInUp-2 {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  50% {
+    opacity: 0.5;
+    transform: translateY(10px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up-2 {
+  animation: fadeInUp-2 1s ease-in-out forwards;
 }
 
 .product-grid {
@@ -40,6 +61,7 @@
   display: flex;
   box-sizing: border-box;
   justify-content: space-between;
+  /* padding: 0; */
 }
 
 html, body {
